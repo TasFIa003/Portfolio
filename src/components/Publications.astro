@@ -1,0 +1,227 @@
+---
+import { publications } from '../data/publications';
+
+function formatAuthors(authors: string): string {
+  return authors.replace(/Noor T\b/g, '<strong class="text-[#2C1A0F] dark:text-[#F0EBD8] font-semibold">Noor T</strong>');
+}
+
+const journalPubs = publications.filter(p => p.type === 'Journal' && p.status === 'Published').sort((a, b) => b.year - a.year);
+const underReviewPubs = publications.filter(p => p.type === 'Journal' && (p.status === 'Under Review' || p.status === 'Under Revision')).sort((a, b) => b.year - a.year);
+const conferencePubs = publications.filter(p => p.type === 'Conference').sort((a, b) => b.year - a.year);
+---
+
+<section
+  id="publications"
+  class="py-24 px-4 sm:px-6 lg:px-8 bg-[#FAEDCD] dark:bg-[#1F1912]"
+  aria-labelledby="publications-heading"
+>
+  <div class="max-w-4xl mx-auto">
+    <div class="mb-10">
+      <p class="text-sm font-semibold tracking-widest uppercase text-golden-600 dark:text-golden-400 mb-3" data-animate>
+        Scholarly Work
+      </p>
+      <h2
+        id="publications-heading"
+        class="section-heading text-3xl sm:text-4xl text-[#2C1A0F] dark:text-[#F0EBD8] mb-2"
+        data-animate data-animate-delay="100"
+      >
+        Publications
+      </h2>
+      <p class="text-sm text-[#9A7A60] dark:text-[#7A6248] italic" data-animate data-animate-delay="200">
+        Author name <strong class="text-[#4A3020] dark:text-[#D8C8A8] not-italic font-semibold">Noor T</strong> highlighted in each entry.
+      </p>
+    </div>
+
+    <!-- Filter tabs -->
+    <div class="flex flex-wrap gap-2 mb-8" role="tablist" aria-label="Filter publications" data-animate data-animate-delay="200">
+      {(['All', 'Journal', 'Conference', 'Under Review'] as const).map((label) => (
+        <button
+          role="tab"
+          data-filter={label}
+          aria-selected={label === 'All' ? 'true' : 'false'}
+          class="pub-filter px-4 py-2 rounded-full text-sm font-medium border transition-colors focus:outline-none focus:ring-2 focus:ring-golden-500 focus:ring-offset-2
+            border-[#DFD0B5] dark:border-[#3D3020] text-[#7A5E48] dark:text-[#C0A87A]
+            hover:border-golden-400 dark:hover:border-golden-600 hover:text-golden-700 dark:hover:text-golden-300"
+        >
+          {label}
+          <span class="ml-1.5 text-xs opacity-70">
+            {label === 'All' && `(${publications.length})`}
+            {label === 'Journal' && `(${journalPubs.length})`}
+            {label === 'Conference' && `(${conferencePubs.length})`}
+            {label === 'Under Review' && `(${underReviewPubs.length})`}
+          </span>
+        </button>
+      ))}
+    </div>
+
+    <div id="pub-list" class="space-y-4" data-animate data-animate-delay="300">
+
+      <!-- Published Journals -->
+      <div class="pub-section" data-section="Journal">
+        <h3 class="text-xs font-bold tracking-widest uppercase text-[#B8A080] dark:text-[#5A4530] mb-4 px-1">
+          Peer-Reviewed Journals · {journalPubs.length} articles
+        </h3>
+        <div class="space-y-3">
+          {journalPubs.map((pub) => (
+            <article
+              class="pub-entry group p-5 rounded-xl border border-[#DFD0B5] dark:border-[#3D3020] bg-[#FEFAE0] dark:bg-[#251E14] hover:border-golden-300 dark:hover:border-golden-700 hover:shadow-sm transition-all duration-200"
+              data-type={pub.type}
+              data-status={pub.status}
+            >
+              <div class="flex flex-wrap items-start justify-between gap-2 mb-2">
+                <div class="flex flex-wrap items-center gap-2">
+                  <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-golden-50 dark:bg-golden-950/30 text-golden-700 dark:text-golden-400 border border-golden-200 dark:border-golden-800/40">
+                    Published
+                  </span>
+                  {pub.isLeadAuthor && (
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-sage-100 dark:bg-sage-950/30 text-sage-700 dark:text-sage-400 border border-sage-200 dark:border-sage-800/40">
+                      Lead Author
+                    </span>
+                  )}
+                </div>
+                <span class="text-xs font-medium text-[#B8A080] dark:text-[#5A4530] tabular-nums">{pub.year}</span>
+              </div>
+              <p class="text-sm font-semibold text-[#2C1A0F] dark:text-[#F0EBD8] mb-1.5 leading-snug">{pub.title}</p>
+              <p class="text-xs text-[#9A7A60] dark:text-[#C0A87A] mb-1.5" set:html={formatAuthors(pub.authors)} />
+              <div class="flex flex-wrap items-center justify-between gap-2 mt-2">
+                <span class="text-xs italic text-golden-700 dark:text-golden-400 font-medium">{pub.venue}</span>
+                {pub.doiUrl && (
+                  <a
+                    href={pub.doiUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center gap-1 text-xs font-medium text-[#9A7A60] dark:text-[#C0A87A] hover:text-golden-600 dark:hover:text-golden-400 transition-colors focus:outline-none focus:underline"
+                    aria-label={`Link for: ${pub.title}`}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                    </svg>
+                    {pub.doi ? 'DOI' : 'Link'}
+                  </a>
+                )}
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <!-- Under Review / Under Revision -->
+      <div class="pub-section" data-section="Under Review">
+        <h3 class="text-xs font-bold tracking-widest uppercase text-[#B8A080] dark:text-[#5A4530] mb-4 px-1 mt-8">
+          Under Review / Under Revision · {underReviewPubs.length} manuscripts
+        </h3>
+        <div class="space-y-3">
+          {underReviewPubs.map((pub) => (
+            <article
+              class="pub-entry group p-5 rounded-xl border border-[#DFD0B5] dark:border-[#3D3020] bg-[#FEFAE0] dark:bg-[#251E14] hover:border-amber-300 dark:hover:border-amber-700 hover:shadow-sm transition-all duration-200"
+              data-type={pub.type}
+              data-status={pub.status}
+            >
+              <div class="flex flex-wrap items-start justify-between gap-2 mb-2">
+                <div class="flex flex-wrap items-center gap-2">
+                  <span class={`inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold border ${
+                    pub.status === 'Under Revision'
+                      ? 'bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-700/40'
+                      : 'bg-sky-50 dark:bg-sky-900/30 text-sky-700 dark:text-sky-400 border-sky-200 dark:border-sky-700/40'
+                  }`}>
+                    {pub.status}
+                  </span>
+                  {pub.isLeadAuthor && (
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-sage-100 dark:bg-sage-950/30 text-sage-700 dark:text-sage-400 border border-sage-200 dark:border-sage-800/40">
+                      Lead Author
+                    </span>
+                  )}
+                </div>
+                <span class="text-xs font-medium text-[#B8A080] dark:text-[#5A4530] tabular-nums">{pub.year}</span>
+              </div>
+              <p class="text-sm font-semibold text-[#2C1A0F] dark:text-[#F0EBD8] mb-1.5 leading-snug">{pub.title}</p>
+              <p class="text-xs text-[#9A7A60] dark:text-[#C0A87A] mb-1.5" set:html={formatAuthors(pub.authors)} />
+              <div class="mt-2">
+                <span class="text-xs italic text-golden-700 dark:text-golden-400 font-medium">{pub.venue}</span>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <!-- Conference Proceedings -->
+      <div class="pub-section" data-section="Conference">
+        <h3 class="text-xs font-bold tracking-widest uppercase text-[#B8A080] dark:text-[#5A4530] mb-4 px-1 mt-8">
+          Conference Proceedings · {conferencePubs.length} papers
+        </h3>
+        <div class="space-y-3">
+          {conferencePubs.map((pub) => (
+            <article
+              class="pub-entry group p-5 rounded-xl border border-[#DFD0B5] dark:border-[#3D3020] bg-[#FEFAE0] dark:bg-[#251E14] hover:border-violet-300 dark:hover:border-violet-700 hover:shadow-sm transition-all duration-200"
+              data-type={pub.type}
+              data-status={pub.status}
+            >
+              <div class="flex flex-wrap items-start justify-between gap-2 mb-2">
+                <div class="flex flex-wrap items-center gap-2">
+                  <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-violet-50 dark:bg-violet-900/30 text-violet-700 dark:text-violet-400 border border-violet-200 dark:border-violet-700/40">
+                    Conference
+                  </span>
+                  {pub.isLeadAuthor && (
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-sage-100 dark:bg-sage-950/30 text-sage-700 dark:text-sage-400 border border-sage-200 dark:border-sage-800/40">
+                      Lead Author
+                    </span>
+                  )}
+                </div>
+                <span class="text-xs font-medium text-[#B8A080] dark:text-[#5A4530] tabular-nums">{pub.year}</span>
+              </div>
+              <p class="text-sm font-semibold text-[#2C1A0F] dark:text-[#F0EBD8] mb-1.5 leading-snug">{pub.title}</p>
+              <p class="text-xs text-[#9A7A60] dark:text-[#C0A87A] mb-1.5" set:html={formatAuthors(pub.authors)} />
+              <div class="flex flex-wrap items-center justify-between gap-2 mt-2">
+                <span class="text-xs italic text-golden-700 dark:text-golden-400 font-medium">{pub.venue}</span>
+                {pub.doiUrl && (
+                  <a
+                    href={pub.doiUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center gap-1 text-xs font-medium text-[#9A7A60] dark:text-[#C0A87A] hover:text-golden-600 dark:hover:text-golden-400 transition-colors focus:outline-none focus:underline"
+                    aria-label={`Link for: ${pub.title}`}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                    </svg>
+                    Link
+                  </a>
+                )}
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const filterBtns = document.querySelectorAll<HTMLButtonElement>('.pub-filter');
+  const pubSections = document.querySelectorAll<HTMLElement>('.pub-section');
+
+  function setFilter(active: string) {
+    filterBtns.forEach(btn => {
+      const isActive = btn.dataset.filter === active;
+      btn.setAttribute('aria-selected', String(isActive));
+      btn.dataset.selected = String(isActive);
+      if (isActive) {
+        btn.classList.add('bg-golden-500', 'border-golden-500', 'text-white');
+        btn.classList.remove('border-[#DFD0B5]', 'text-[#7A5E48]');
+      } else {
+        btn.classList.remove('bg-golden-500', 'border-golden-500', 'text-white');
+        btn.classList.add('border-[#DFD0B5]', 'text-[#7A5E48]');
+      }
+    });
+
+    pubSections.forEach(section => {
+      const sectionType = section.dataset.section;
+      section.style.display = (active === 'All' || sectionType === active) ? '' : 'none';
+    });
+  }
+
+  setFilter('All');
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => setFilter(btn.dataset.filter ?? 'All'));
+  });
+</script>

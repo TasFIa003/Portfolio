@@ -1,0 +1,155 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const {
+  title = 'Tasfia Noor — Computational Biology & Bioinformatics Researcher',
+  description = 'PhD candidate applicant in Computational Biology & Bioinformatics. Research focuses on multi-omics analysis, biomarker discovery, drug repurposing, and vaccine development. Based in Rajshahi, Bangladesh.',
+  ogImage = '/images/og-image.png',
+} = Astro.props;
+
+const siteUrl = 'https://tasfianoor.vercel.app';
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="keywords" content="Tasfia Noor, Computational Biology, Bioinformatics, Multi-omics, Drug Repurposing, PhD, RUET, Rajshahi" />
+    <meta name="author" content="Tasfia Noor" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={`${siteUrl}${ogImage}`} />
+    <meta property="og:site_name" content="Tasfia Noor" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={`${siteUrl}${ogImage}`} />
+
+    <!-- JSON-LD Person Schema -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Tasfia Noor",
+        "jobTitle": "Computational Biology & Bioinformatics Researcher",
+        "url": "https://tasfianoor.vercel.app",
+        "email": "tasfianoor.cse.ruet@gmail.com",
+        "telephone": "+8801706794170",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Rajshahi",
+          "addressCountry": "BD"
+        },
+        "alumniOf": {
+          "@type": "EducationalOrganization",
+          "name": "Rajshahi University of Engineering & Technology"
+        },
+        "sameAs": [
+          "https://github.com/TasFIa003",
+          "https://www.linkedin.com/in/tasfia-noor-8491661b3/",
+          "https://www.researchgate.net/profile/Tasfia-Noor"
+        ],
+        "knowsAbout": [
+          "Computational Biology",
+          "Bioinformatics",
+          "Multi-omics Analysis",
+          "Drug Repurposing",
+          "Biomarker Discovery",
+          "Machine Learning"
+        ]
+      }
+    </script>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <title>{title}</title>
+
+    <!-- Theme initialization — must run before render to prevent flash -->
+    <script is:inline>
+      (function () {
+        const stored = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (stored === 'dark' || (!stored && prefersDark)) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
+  </head>
+  <body class="bg-[#FEFAE0] dark:bg-[#1A1510] text-[#2C1A0F] dark:text-[#F0EBD8] font-sans antialiased transition-colors duration-300">
+    <slot />
+    <!-- Scroll-animation observer -->
+    <script is:inline>
+      document.addEventListener('DOMContentLoaded', () => {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('animate-in');
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+        );
+        document.querySelectorAll('[data-animate]').forEach((el) => observer.observe(el));
+      });
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  [data-animate] {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+  [data-animate].animate-in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  [data-animate-delay="100"] { transition-delay: 0.1s; }
+  [data-animate-delay="200"] { transition-delay: 0.2s; }
+  [data-animate-delay="300"] { transition-delay: 0.3s; }
+  [data-animate-delay="400"] { transition-delay: 0.4s; }
+  [data-animate-delay="500"] { transition-delay: 0.5s; }
+
+  html {
+    scroll-padding-top: 72px;
+  }
+
+  ::selection {
+    background-color: rgba(212, 163, 115, 0.25);
+    color: inherit;
+  }
+
+  .section-heading {
+    font-family: 'Lora', Georgia, serif;
+    font-weight: 600;
+  }
+</style>

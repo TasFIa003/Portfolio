@@ -1,0 +1,205 @@
+---
+// MoleculeViewer — animated 3D molecular background for the hero
+// PDB 6LU7: SARS-CoV-2 main protease (Mpro) with N3 covalent inhibitor
+//
+// To swap the structure later:
+//   1. Drop a new .pdb file in /public/molecule/
+//   2. Update PDB_PATH below
+//   3. Update LIGAND_RESN to the residue name(s) of the new ligand (grep "^HETATM" yourfile.pdb | awk '{print $4}' | sort -u)
+---
+
+<div
+  id="mol-bg"
+  class="absolute inset-0 z-0 pointer-events-none overflow-hidden select-none"
+  aria-hidden="true"
+>
+  <!-- Fallback gradient (visible during load + on no-WebGL) -->
+  <div id="mol-fallback" class="absolute inset-0" aria-hidden="true"></div>
+
+  <!-- 3Dmol canvas target — starts invisible, fades in after render -->
+  <div
+    id="mol-viewer"
+    class="absolute inset-0"
+    style="opacity:0;transition:opacity 1.8s ease-in;"
+  ></div>
+</div>
+
+<style>
+  #mol-fallback {
+    background:
+      radial-gradient(
+        ellipse 90% 70% at 52% 48%,
+        rgba(212, 163, 115, 0.18) 0%,
+        rgba(204, 213, 174, 0.10) 48%,
+        transparent 78%
+      );
+  }
+
+  /* Dark mode fallback tint */
+  :global(.dark) #mol-fallback {
+    background:
+      radial-gradient(
+        ellipse 90% 70% at 52% 48%,
+        rgba(212, 163, 115, 0.12) 0%,
+        rgba(204, 213, 174, 0.07) 48%,
+        transparent 78%
+      );
+  }
+
+  /* 3Dmol injects a canvas; ensure it fills the container */
+  #mol-viewer canvas {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+</style>
+
+<script is:inline>
+(function () {
+  'use strict';
+
+  /* ── Config ────────────────────────────────────────────────────────────── */
+  var DMOL_CDN = 'https://cdn.jsdelivr.net/npm/3dmol@2.0.1/build/3Dmol-min.js';
+  var PDB_PATH  = '/molecule/6lu7.pdb';
+
+  // Residue names to show as ligand sticks/spheres (everything else HETATM gets hidden)
+  var LIGAND_RESN = ['02J', 'PJE', '010'];
+
+  // Visual settings
+  var PROTEIN_COLOR  = '#C08B5A';   // warm caramel for the main protein ribbon
+  var HELIX_COLOR    = '#D4A373';   // lighter golden for helices
+  var SHEET_COLOR    = '#CCD5AE';   // sage green for beta sheets
+  var SURFACE_COLOR  = '#F5EDD8';   // cream for translucent surface
+  var VIEWER_OPACITY = 0.38;        // overall molecule layer opacity
+  var SPIN_SPEED     = 0.35;        // degrees per frame (≈ 1 full rotation / 17s at 60 fps)
+
+  /* ── WebGL check ───────────────────────────────────────────────────────── */
+  function canWebGL() {
+    try {
+      var c = document.createElement('canvas');
+      return !!(
+        window.WebGLRenderingContext &&
+        (c.getContext('webgl') || c.getContext('experimental-webgl'))
+      );
+    } catch (_) { return false; }
+  }
+
+  /* ── Dynamic script loader ─────────────────────────────────────────────── */
+  function loadScript(src) {
+    return new Promise(function (resolve, reject) {
+      var s = document.createElement('script');
+      s.src   = src;
+      s.async = true;
+      s.onload  = resolve;
+      s.onerror = function () { reject(new Error('Script load failed: ' + src)); };
+      document.head.appendChild(s);
+    });
+  }
+
+  /* ── Main init ─────────────────────────────────────────────────────────── */
+  function initMolecule() {
+    if (!canWebGL()) return;
+
+    var el = document.getElementById('mol-viewer');
+    if (!el) return;
+
+    var isMobile = window.matchMedia('(max-width: 640px)').matches;
+
+    loadScript(DMOL_CDN)
+      .then(function () {
+        if (!window.$3Dmol) throw new Error('$3Dmol not defined after load');
+        return fetch(PDB_PATH).then(function (r) {
+          if (!r.ok) throw new Error('PDB fetch failed: ' + r.status);
+          return r.text();
+        });
+      })
+      .then(function (pdbData) {
+        /* ── Create viewer ─────────────────────────────────────────────── */
+        var viewer = window.$3Dmol.createViewer(el, {
+          backgroundColor: 'transparent',
+          antialias: !isMobile,
+        });
+
+        viewer.addModel(pdbData, 'pdb');
+
+        /* ── Style protein (chain A, hetflag:false) ────────────────────── */
+        // Base: loops / coil
+        viewer.setStyle({ hetflag: false }, {
+          cartoon: { color: PROTEIN_COLOR, opacity: 0.80 }
+        });
+        // Override: alpha helices → warmer golden
+        viewer.setStyle({ ss: 'h', hetflag: false }, {
+          cartoon: { color: HELIX_COLOR, opacity: 0.85 }
+        });
+        // Override: beta strands → sage green
+        viewer.setStyle({ ss: 's', hetflag: false }, {
+          cartoon: { color: SHEET_COLOR, opacity: 0.85 }
+        });
+
+        /* ── Hide all HET first (water, ions, …) ──────────────────────── */
+        viewer.setStyle({ hetflag: true }, {});
+
+        /* ── Show ligand N3 fragments as sticks + spheres ─────────────── */
+        viewer.setStyle({ resn: LIGAND_RESN }, {
+          stick: {
+            colorscheme: 'orangeCarbon',
+            radius: 0.20,
+          },
+          sphere: {
+            scale: 0.34,
+            colorscheme: 'orangeCarbon',
+          },
+        });
+
+        /* ── Initial render + zoom ─────────────────────────────────────── */
+        // Center on the ligand binding pocket, then zoom out to show protein context
+        viewer.zoomTo({ resn: LIGAND_RESN }, 0);
+        viewer.zoom(0.62, 0);  // zoom out so the surrounding protein is visible
+        viewer.render();
+
+        /* ── Translucent molecular surface (skip on mobile for perf) ───── */
+        if (!isMobile) {
+          viewer.addSurface(window.$3Dmol.SurfaceType.SAS, {
+            opacity: 0.16,
+            color: SURFACE_COLOR,
+          }, { hetflag: false });
+          // surface renders async; viewer updates itself
+        }
+
+        /* ── Fade in ──────────────────────────────────────────────────── */
+        requestAnimationFrame(function () {
+          el.style.opacity = String(VIEWER_OPACITY);
+        });
+
+        /* ── Rotation (respects prefers-reduced-motion) ───────────────── */
+        var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (!reduceMotion) {
+          viewer.spin('y', SPIN_SPEED);
+        }
+      })
+      .catch(function (err) {
+        // Molecule is purely decorative — silent fallback (CSS gradient stays visible)
+        if (window.console && console.warn) {
+          console.warn('[MoleculeViewer] Could not load 3D background:', err.message);
+        }
+      });
+  }
+
+  /* ── Schedule after first paint + idle ────────────────────────────────── */
+  function schedule() {
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(initMolecule, { timeout: 3500 });
+    } else {
+      setTimeout(initMolecule, 800);
+    }
+  }
+
+  if (document.readyState === 'complete') {
+    schedule();
+  } else {
+    window.addEventListener('load', schedule, { once: true });
+  }
+})();
+</script>

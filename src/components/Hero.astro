@@ -1,0 +1,159 @@
+---
+import MoleculeViewer from './MoleculeViewer.astro';
+import SocialIcon from './icons/SocialIcon.astro';
+---
+
+<section
+  id="hero"
+  class="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden"
+  aria-label="Hero section"
+>
+  <!-- ① Molecular 3-D background (z-0) -->
+  <MoleculeViewer />
+
+  <!-- ② Text-contrast scrim (z-1): horizontal fade keeps centre readable -->
+  <div
+    class="absolute inset-0 z-[1] pointer-events-none"
+    style="background:
+      radial-gradient(ellipse 65% 55% at 50% 48%,
+        rgba(254,250,224,0.55) 0%,
+        rgba(254,250,224,0.28) 38%,
+        rgba(254,250,224,0.00) 72%
+      );"
+    aria-hidden="true"
+  ></div>
+  <!-- dark-mode scrim -->
+  <div
+    class="absolute inset-0 z-[1] pointer-events-none hidden dark:block"
+    style="background:
+      radial-gradient(ellipse 65% 55% at 50% 48%,
+        rgba(26,21,16,0.60) 0%,
+        rgba(26,21,16,0.30) 38%,
+        rgba(26,21,16,0.00) 72%
+      );"
+    aria-hidden="true"
+  ></div>
+
+  <!-- ③ Hero content (z-10) -->
+  <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+
+    <!-- PhD availability pill -->
+    <div
+      class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium tracking-wider uppercase bg-golden-50 dark:bg-golden-950/40 text-golden-700 dark:text-golden-300 border border-golden-200/60 dark:border-golden-700/40 mb-6"
+      style="opacity:0;animation:fadeIn 0.5s ease-out 0.2s forwards;"
+    >
+      <span class="w-1.5 h-1.5 rounded-full bg-golden-500 animate-pulse" aria-hidden="true"></span>
+      Open to PhD opportunities
+    </div>
+
+    <!-- Name -->
+    <h1
+      class="font-serif text-5xl sm:text-6xl lg:text-7xl font-bold text-[#2C1A0F] dark:text-[#F0EBD8] mb-4 tracking-tight"
+      style="opacity:0;animation:fadeUp 0.7s ease-out 0.3s forwards;"
+    >
+      Tasfia Noor
+    </h1>
+
+    <!-- Tagline -->
+    <p
+      class="text-lg sm:text-xl font-medium text-golden-600 dark:text-golden-400 mb-5"
+      style="opacity:0;animation:fadeUp 0.7s ease-out 0.45s forwards;"
+    >
+      Computational Biology &amp; Bioinformatics Researcher &nbsp;·&nbsp; Software Developer
+    </p>
+
+    <!-- One-liner -->
+    <p
+      class="max-w-2xl mx-auto text-base sm:text-lg text-[#7A5E48] dark:text-[#C0A87A] leading-relaxed mb-10"
+      style="opacity:0;animation:fadeUp 0.7s ease-out 0.6s forwards;"
+    >
+      Designing bioinformatics algorithms, R packages, and web platforms for drug &amp; vaccine
+      discovery via integrative multi-omics analysis — genomics, transcriptomics, proteomics,
+      and metagenomics.
+    </p>
+
+    <!-- CTA Buttons -->
+    <div
+      class="flex flex-wrap justify-center gap-3 mb-12"
+      style="opacity:0;animation:fadeUp 0.7s ease-out 0.75s forwards;"
+    >
+      <a
+        href="#publications"
+        class="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-medium bg-golden-500 hover:bg-golden-600 text-white transition-all hover:-translate-y-0.5 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-golden-500 focus:ring-offset-2"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+        </svg>
+        View Publications
+      </a>
+      <a
+        href="/cv/Tasfia_Noor_PHD_Resume (1).pdf"
+        download
+        class="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-medium border border-[#DFD0B5] dark:border-[#3D3020] text-[#4A3020] dark:text-[#D8C8A8] hover:bg-[#F5EDD8] dark:hover:bg-[#2F2519] transition-all hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-golden-400 focus:ring-offset-2"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+        </svg>
+        Download CV
+      </a>
+      <a
+        href="#contact"
+        class="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-medium border border-golden-300 dark:border-golden-700 text-golden-700 dark:text-golden-300 hover:bg-golden-50 dark:hover:bg-golden-950/30 transition-all hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-golden-500 focus:ring-offset-2"
+      >
+        Contact
+      </a>
+    </div>
+
+    <!-- Social links -->
+    <div
+      class="flex justify-center items-center gap-5"
+      style="opacity:0;animation:fadeUp 0.7s ease-out 0.9s forwards;"
+    >
+      <!-- GitHub — simple-icons siGithub -->
+      <a href="https://github.com/TasFIa003" target="_blank" rel="noopener noreferrer"
+         aria-label="GitHub"
+         class="text-[#9A7A60] dark:text-[#C0A87A] hover:text-[#2C1A0F] dark:hover:text-[#F0EBD8] transition-colors">
+        <SocialIcon name="github" class="w-6 h-6" />
+      </a>
+      <!-- LinkedIn — official LinkedIn brand asset -->
+      <a href="https://www.linkedin.com/in/tasfia-noor-8491661b3/" target="_blank" rel="noopener noreferrer"
+         aria-label="LinkedIn"
+         class="text-[#9A7A60] dark:text-[#C0A87A] hover:text-[#0a66c2] transition-colors">
+        <SocialIcon name="linkedin" class="w-6 h-6" />
+      </a>
+      <!-- ResearchGate — simple-icons siResearchgate (official path) -->
+      <a href="https://www.researchgate.net/profile/Tasfia-Noor" target="_blank" rel="noopener noreferrer"
+         aria-label="ResearchGate"
+         class="text-[#9A7A60] dark:text-[#C0A87A] hover:text-[#00ccbb] transition-colors">
+        <SocialIcon name="researchgate" class="w-6 h-6" />
+      </a>
+      <a href="mailto:tasfianoor.cse.ruet@gmail.com" aria-label="Send email"
+         class="text-[#9A7A60] dark:text-[#C0A87A] hover:text-golden-600 dark:hover:text-golden-400 transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <!-- ④ Scroll indicator -->
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-[#B8A080] dark:text-[#5A4530] z-10 pointer-events-none"
+       aria-hidden="true"
+       style="opacity:0;animation:fadeIn 1s ease-out 1.4s forwards;">
+    <span class="text-xs tracking-widest uppercase">Scroll</span>
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+    </svg>
+  </div>
+</section>
+
+<style>
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+</style>

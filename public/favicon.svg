@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <!-- Background circle -->
+  <circle cx="16" cy="16" r="16" fill="#0d9488"/>
+  <!-- DNA helix simplified / abstract molecule icon -->
+  <path d="M10 8 C10 8, 14 11, 16 14 C18 17, 22 20, 22 20" stroke="white" stroke-width="2" stroke-linecap="round" fill="none"/>
+  <path d="M22 8 C22 8, 18 11, 16 14 C14 17, 10 20, 10 20" stroke="white" stroke-width="2" stroke-linecap="round" fill="none" stroke-dasharray="1.5 2.5"/>
+  <!-- Nodes -->
+  <circle cx="13" cy="11" r="1.5" fill="white" fill-opacity="0.9"/>
+  <circle cx="19" cy="17" r="1.5" fill="white" fill-opacity="0.9"/>
+  <circle cx="10" cy="14" r="1" fill="white" fill-opacity="0.6"/>
+  <circle cx="22" cy="14" r="1" fill="white" fill-opacity="0.6"/>
+</svg>

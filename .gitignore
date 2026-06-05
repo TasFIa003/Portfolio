@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+.vercel/
+
+# Astro cache
+.astro/
+
+# Environment / secrets — never commit these
+.env
+.env.*
+!.env.example
+
+# Claude Code IDE settings
+.claude/
+
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# Editor folders
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
