@@ -6,7 +6,7 @@ function formatAuthors(authors: string): string {
 }
 
 const journalPubs = publications.filter(p => p.type === 'Journal' && p.status === 'Published').sort((a, b) => b.year - a.year);
-const underReviewPubs = publications.filter(p => p.type === 'Journal' && (p.status === 'Under Review' || p.status === 'Under Revision')).sort((a, b) => b.year - a.year);
+const underReviewPubs = publications.filter(p => p.type === 'Journal' && (p.status === 'Under Review' || p.status === 'Minor Revision')).sort((a, b) => b.year - a.year);
 const conferencePubs = publications.filter(p => p.type === 'Conference').sort((a, b) => b.year - a.year);
 ---
 
@@ -28,7 +28,7 @@ const conferencePubs = publications.filter(p => p.type === 'Conference').sort((a
         Publications
       </h2>
       <p class="text-sm text-[#9A7A60] dark:text-[#7A6248] italic" data-animate data-animate-delay="200">
-        Author name <strong class="text-[#4A3020] dark:text-[#D8C8A8] not-italic font-semibold">Noor T</strong> highlighted in each entry.
+        <!---Author name <strong class="text-[#4A3020] dark:text-[#D8C8A8] not-italic font-semibold">Noor T</strong> highlighted in each entry.-->
       </p>
     </div>
 
