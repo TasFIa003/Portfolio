@@ -52,12 +52,20 @@ const activities = [
                     <p class="text-[#9A7A60] dark:text-[#7A6248] text-xs mt-0.5">{edu.location}</p>
                   </div>
                   <div class="text-right shrink-0">
-                    <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-golden-50 dark:bg-golden-950/30 text-golden-700 dark:text-golden-300 border border-golden-200 dark:border-golden-800/40">
-                      <span class="text-xs font-medium">GPA</span>
-                      <span class="font-bold text-sm">{edu.grade}<span class="text-xs font-normal opacity-70">/{edu.gradeScale}</span></span>
-                    </div>
-                    <p class="text-xs text-[#9A7A60] dark:text-[#7A6248] mt-1">{edu.startDate} – {edu.endDate}</p>
-                  </div>
+    <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-golden-50 dark:bg-golden-950/30 text-golden-700 dark:text-golden-300 border border-golden-200 dark:border-golden-800/40">
+      <span class="text-xs font-medium">CGPA</span>
+      <span class="font-bold text-sm">{edu.grade}<span class="text-xs font-normal opacity-70">/{edu.gradeScale}</span></span>
+    </div>
+
+    {edu.juniorSeniorAvg && (
+      <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-golden-50 dark:bg-golden-950/30 text-golden-700 dark:text-golden-300 border border-golden-200 dark:border-golden-800/40 mt-1.5">
+        <span class="text-xs font-medium">Avg CGPA of 3rd & 4th Year</span>
+        <span class="font-bold text-sm">{edu.juniorSeniorAvg}<span class="text-xs font-normal opacity-70">/{edu.gradeScale}</span></span>
+      </div>
+    )}
+
+    <p class="text-xs text-[#9A7A60] dark:text-[#7A6248] mt-1">{edu.startDate} – {edu.endDate}</p>
+</div>
                 </div>
               </div>
             </div>

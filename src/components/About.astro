@@ -54,8 +54,20 @@
         </div>
       </div>
 
-      <!-- Details card -->
-      <div class="md:w-64 shrink-0" data-animate data-animate-delay="200">
+      <!-- Photo + Details card -->
+      <div class="md:w-64 shrink-0 w-full" data-animate data-animate-delay="200">
+        <!-- Profile Photo -->
+        <div class="mb-6 rounded-2xl overflow-hidden border border-[#DFD0B5] dark:border-[#3D3020] shadow-sm">
+          <img
+            src="/images/profile.jpg"
+            alt="Tasfia Noor"
+            width="256"
+            height="320"
+            class="w-full h-auto object-cover aspect-[4/5]"
+            loading="lazy"
+          />
+        </div>
+
         <div class="rounded-2xl border border-[#DFD0B5] dark:border-[#3D3020] bg-[#FAEDCD] dark:bg-[#251E14] p-6 space-y-4">
           <h3 class="font-semibold text-[#2C1A0F] dark:text-[#F0EBD8] text-sm uppercase tracking-wide">Quick Info</h3>
           {[

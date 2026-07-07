@@ -6,6 +6,7 @@ export interface Education {
   endDate: string;
   grade: string;
   gradeScale: string;
+  juniorSeniorAvg: string;
 }
 
 export const education: Education[] = [
@@ -17,6 +18,7 @@ export const education: Education[] = [
     endDate: 'May 2024',
     grade: '3.68',
     gradeScale: '4.00',
+    juniorSeniorAvg: "3.87"
   },
   {
     degree: 'Higher Secondary Certificate (HSC)',
