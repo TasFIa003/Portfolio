@@ -118,17 +118,6 @@ export const publications: Publication[] = [
     doi: '10.1371/journal.pone.0319028',
     doiUrl: 'https://doi.org/10.1371/journal.pone.0319028',
   },
-  {
-    id: 'pub-crc-hcc-2026',
-    authors: 'Ahmed MF, Faysal MF, Noor T, Mollah MNH',
-    title: 'FlexAutoDock: A Flexible Platform for Automated Molecular Docking and Virtual Screening of Natural and Synthetic Compounds',
-    venue: 'Preprint',
-    year: 2026,
-    status: 'Published',
-    type: 'Journal',
-    doi: '10.64898/2026.08.11.744098',
-    doiUrl: 'https://doi.org/10.1371/journal.pone.0319028',
-  },
   
  
 
