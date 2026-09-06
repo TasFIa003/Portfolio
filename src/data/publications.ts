@@ -128,7 +128,7 @@ export const publications: Publication[] = [
     type: 'Journal',
     doi: '10.64898/2026.08.11.744098',
     doiUrl: 'https://doi.org/10.1371/journal.pone.0319028',
-  }
+  },
   
  
 
